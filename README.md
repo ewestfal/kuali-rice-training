@@ -1,12 +1,12 @@
 # Kuali Rice Training
 
-Contains exercises, presentations, and manuals for various [Kuali Rice](http://rice.kuali.org)-related trainings that I have conducted over the years. Enjoy :)
+Contains exercises, presentations, and manuals for the [Kuali Rice](http://rice.kuali.org) training that I have conducted over the years. Enjoy :)
 
 ## Using
 
-Each training project folder has a date based on when it was created and includes a number of exercises along with documents for the training class. The documents can be found in the ```training-docs``` directory of each folder. The most recent is from July 2013 and is based on Kual Rice version 2.2.1.
+This repository contains my most recent training content for Kuali Rice version 2.2.1 from July 2013. For the setup, exercise booklets, and PowerPoint slides for the training, you can download those from the Releases in GitHub.
 
-The modules of Kuali Rice covered within these training projects include:
+The modules of Kuali Rice covered within this training project include:
 
 * Kuali Enterprise Workflow (KEW)
 * Kuali Identity Management (KIM)
@@ -23,4 +23,4 @@ All original works in this repository are Copyright Eric Westfall, All Rights Re
 
 ## Other Info
 
-Note that the exercise booklets for these projects reference an SVN repository at projectlocker.com which no longer exists. All the necessary files are here in GitHub. If you find something that looks like it needs corrected, feel free to submit a pull request.
+Note that the exercise booklets for this project reference an SVN repository at projectlocker.com which no longer exists. All the necessary files are here in GitHub.
