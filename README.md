@@ -19,7 +19,7 @@ The modules of Kuali Rice covered within this training project include:
 
 ## License
 
-All original works in this repository are Copyright Eric Westfall, All Rights Reserved and may be used for personal use only. See [LICENSE.txt](LICENSE.txt) for details. If you are interested in using these materials for non-personal use then please contact me at ewestfal@gmail.com.
+All original works in this repository are Copyright Eric Westfall, All Rights Reserved and may be used for personal use only. See [LICENSE.txt](LICENSE.txt) for details. If you are interested in using these materials for non-personal use then please contact me at ewestfal@gmail.com. I also do consulting, training, and application development across a number of different technology areas, so please contact me as well if you would like to work with me on something.
 
 ## Other Info
 
