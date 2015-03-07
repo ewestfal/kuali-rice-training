@@ -13,7 +13,6 @@ The modules of Kuali Rice covered within this training project include:
 * Kuali Enterprise Notification (KEN)
 * Kuali Service Bus (KSB)
 * Kuali Rule Management System (KRMS)
-* Kuali Nervous System (KNS)
 * Kuali Rapid Application Development (KRAD)
 * eDocLite
 
