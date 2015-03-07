@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptor-repository version="1.0">
+
+  <class-descriptor class="trnapp.bookstore.Book" table="book_t">
+    <field-descriptor name="id" column="book_id" jdbc-type="BIGINT"
+                      primarykey="true" autoincrement="true" sequence-name="book_s"/>
+    <field-descriptor name="title" column="title" jdbc-type="VARCHAR" />
+    <field-descriptor name="authorId" column="author_id" jdbc-type="BIGINT" />
+    <field-descriptor name="category" column="category" jdbc-type="VARCHAR" />
+    <field-descriptor name="isbn" column="isbn" jdbc-type="VARCHAR" />
+    <field-descriptor name="publisher" column="publisher" jdbc-type="VARCHAR" />
+    <field-descriptor name="publicationDate" column="pub_date" jdbc-type="DATE" />
+    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+                      locking="true" />
+    <reference-descriptor
+         name="author"
+         class-ref="trnapp.bookstore.Author"
+         auto-retrieve="true"
+         auto-delete="false"
+         auto-update="true">
+      <foreignkey field-ref="authorId"/>
+    </reference-descriptor>
+    <collection-descriptor name="chapters"
+         element-class-ref="trnapp.bookstore.Chapter"
+         collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+         proxy="true"
+         auto-retrieve="true"
+         auto-update="object"
+         auto-delete="object">
+      <orderby name="number" sort="ASC" />
+      <inverse-foreignkey field-ref="bookId" />
+    </collection-descriptor>    
+  </class-descriptor>
+  
+  <class-descriptor class="trnapp.bookstore.Author" table="author_t">
+    <field-descriptor name="id" column="author_id" jdbc-type="BIGINT"
+                      primarykey="true" autoincrement="true" sequence-name="author_s"/>
+    <field-descriptor name="firstName" column="first_name" jdbc-type="VARCHAR" />
+    <field-descriptor name="middleName" column="middle_name" jdbc-type="VARCHAR" />
+    <field-descriptor name="lastName" column="last_name" jdbc-type="VARCHAR" />
+    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+                      locking="true" />
+  </class-descriptor>
+  
+  <class-descriptor class="trnapp.bookstore.Chapter" table="chapter_t">
+    <field-descriptor name="id" column="chapter_id" jdbc-type="BIGINT"
+                      primarykey="true" autoincrement="true"
+                      sequence-name="chapter_s"/>
+    <field-descriptor name="title" column="title" jdbc-type="VARCHAR" />
+    <field-descriptor name="number" column="number" jdbc-type="INTEGER" />
+    <field-descriptor name="bookId" column="book_id" jdbc-type="BIGINT" />
+    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+                      locking="true" />
+  </class-descriptor>
+  
+  <class-descriptor class="trnapp.bookstore.BookOrderDocument" table="book_order_doc_t">
+    <field-descriptor name="documentNumber" column="doc_hdr_id"
+      jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="versionNumber" column="ver_nbr"
+      jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+    <reference-descriptor name="documentHeader"
+        class-ref="org.kuali.rice.krad.bo.DocumentHeader"
+        auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <foreignkey field-ref="documentNumber"/>
+    </reference-descriptor>
+    <collection-descriptor
+        name="bookOrderEntries"
+        element-class-ref="trnapp.bookstore.BookOrderEntry"
+        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+        proxy="true"
+        auto-retrieve="true"
+        auto-update="object"
+        auto-delete="object">    	
+      <inverse-foreignkey field-ref="documentId" />
+    </collection-descriptor>    
+  </class-descriptor>
+  
+  <class-descriptor class="trnapp.bookstore.BookOrderEntry"
+      table="book_order_entry_t">
+    <field-descriptor name="id" column="book_order_entry_id" jdbc-type="BIGINT"
+        primarykey="true" autoincrement="true"
+        sequence-name="book_order_entry_s"/>
+    <field-descriptor name="documentId" column="doc_hdr_id"
+        jdbc-type="VARCHAR"/>
+    <field-descriptor name="bookId" column="book_id" jdbc-type="BIGINT"/>
+    <field-descriptor name="quantity" column="quantity" jdbc-type="INTEGER"/>
+    <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+        locking="true"/>
+    <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+    <reference-descriptor name="book" class-ref="trnapp.bookstore.Book"
+        auto-retrieve="true" auto-update="object" auto-delete="object"
+        proxy="true" >
+      <foreignkey field-ref="bookId" />
+    </reference-descriptor>    
+  </class-descriptor>
+  
+</descriptor-repository>

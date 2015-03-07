@@ -1,0 +1,22 @@
+© Copyright
+2010 - 2015
+Eric Westfall
+
+All rights reserved, including all copyrights and all other intellectual
+property rights in the contents hereof.
+
+The compositions and contents herein are not to be copied, reproduced, printed,
+published, posted, displayed, incorporated, stored in or scanned into a
+retrieval system or database, transmitted, broadcast, bartered or sold, in
+whole or in part without the prior express written permission of the sole
+author, who is, unless otherwise denoted, Eric Westfall. Unauthorized
+duplication is strictly prohibited and is an infringement of National and
+International Copyright laws.
+
+THE SOFTWARE AND MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE AND MATERIALS OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE AND MATERIALS.

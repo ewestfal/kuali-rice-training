@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="BookOrderDocument" parent="TransactionalDocumentEntry"> 
+    <property name="documentTypeName" value="BookOrderDocumentType"/>
+    <property name="documentClass" value="trnapp.bookstore.BookOrderDocument"/>
+    <property name="businessRulesClass" value="trnapp.bookstore.BookOrderDocumentRule"/>
+    
+    <!-- <property name="workflowProperties" ref="BookOrderDocument-WorkflowProperties"/> -->
+        
+  </bean>
+  
+    <!-- 
+  
+  <bean id="BookOrderDocument-WorkflowProperties" class="org.kuali.rice.krad.datadictionary.WorkflowProperties">
+    <property name="workflowPropertyGroups">
+      <list>
+        <bean class="org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup">
+          <property name="basePath" value="document.bookOrderEntries"/>
+          <property name="workflowProperties">
+            <list>
+              <bean class="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+              	<property name="path" value="bookId"/>
+              </bean>
+              <bean class="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+              	<property name="path" value="quantity"/>
+              </bean>
+              <bean class="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+              	<property name="path" value="book"/>
+              </bean>
+              <bean class="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+              	<property name="path" value="book.category"/>
+              </bean>
+              <bean class="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+              	<property name="path" value="book.author"/>
+              </bean>              
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  -->
+  
+  <bean id="BookOrder-View" parent="Uif-TransactionalDocumentView">
+    <property name="headerText" value="Book Order"/>
+    <property name="formClass" value="trnapp.bookstore.BookOrderForm"/>
+    <property name="documentClass" value="trnapp.bookstore.BookOrderDocument"/>
+    <property name="items">
+      <list>
+        <ref bean="BookOrder-MainPage"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="BookOrder-MainPage" parent="Uif-DocumentPage">
+    <property name="items">
+      <list merge="true">
+        <bean id="BookOrder-BookOrderEntries" parent="Uif-Disclosure-TableCollectionSection">        
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="headerText" value="Book Order Entries"/>
+          <property name="propertyName" value="bookOrderEntries"/>
+          <property name="collectionObjectClass" value="trnapp.bookstore.BookOrderEntry"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="bookId"/>
+              <bean parent="Uif-InputField" p:propertyName="quantity"/>              
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

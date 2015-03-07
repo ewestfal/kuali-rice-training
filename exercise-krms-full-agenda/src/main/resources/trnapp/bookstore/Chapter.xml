@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="Chapter" parent="DataObjectEntry"
+        p:dataObjectClass="trnapp.bookstore.Chapter"
+        p:titleAttribute="id"
+        p:objectLabel="Chapter">
+    <property name="attributes">
+      <list>
+        <ref bean="Chapter-id"/>
+        <ref bean="Chapter-title"/>
+        <ref bean="Chapter-number"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Chapter-id" parent="AttributeDefinition"
+        p:name="id"
+        p:label="Chapter Id"
+        p:shortLabel="Id"
+        p:maxLength="19">
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="30"/>
+    </property>
+  </bean>
+
+  <bean id="Chapter-title" parent="AttributeDefinition"
+        p:name="title"
+        p:label="Chapter"
+        p:shortLabel="Title"
+        p:maxLength="64">
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="30"/>
+    </property>
+  </bean>
+  
+  <bean id="Chapter-number" parent="AttributeDefinition"
+        p:name="number"
+        p:label="Chapter Number"
+        p:shortLabel="Number"
+        p:maxLength="4">
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="30"/>
+    </property>
+  </bean>
+
+</beans>

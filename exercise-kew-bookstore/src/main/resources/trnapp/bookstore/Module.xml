@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	 	  
+    <bean id="bookstoreModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+        <property name="initializeDataDictionary" value="true"/>
+        <property name="dataDictionaryPackages">
+          <list>
+            <value>classpath:trnapp/bookstore/Author.xml</value>
+            <value>classpath:trnapp/bookstore/Book.xml</value>
+            <value>classpath:trnapp/bookstore/Chapter.xml</value>
+            <value>classpath:trnapp/bookstore/AuthorMaintenanceDocument.xml</value>
+            <value>classpath:trnapp/bookstore/BookMaintenanceDocument.xml</value>
+            <value>classpath:trnapp/bookstore/BookOrderDocument.xml</value>
+            <value>classpath:trnapp/bookstore/BookOrderEntry.xml</value>
+            <value>classpath:trnapp/bookstore/BookstoreApplication.xml</value>
+          </list>
+        </property>
+    
+        <property name="namespaceCode" value="bookstore"/>
+        <property name="databaseRepositoryFilePaths">
+          <list>
+            <value>trnapp/bookstore/OJB-repository-bookstore.xml</value>
+          </list>
+        </property>
+        <property name="packagePrefixes">
+          <list>
+            <value>trnapp.bookstore</value>
+          </list>
+        </property>
+    </bean>
+
+    <bean id="bookstoreModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
+        <property name="moduleConfiguration" ref="bookstoreModuleConfiguration" />
+    </bean>
+    
+    <bean id="departmentService" class="trnapp.bookstore.department.DepartmentServiceImpl"/>
+    
+    <bean id="departmentRoleTypeService"
+          class="trnapp.bookstore.department.DepartmentRoleTypeService">
+      <property name="departmentService" ref="departmentService"/>
+    </bean>
+
+    <bean class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter">
+      <property name="callbackService" ref="departmentRoleTypeService" />
+      <property name="serviceNameSpaceURI" value="" />
+      <property name="localServiceName" value="departmentRoleTypeService" />
+      <property name="serviceInterface" value="org.kuali.rice.kim.framework.role.RoleTypeService" />
+    </bean>
+    
+    <bean id="departmentHeadDerivedRoleTypeService"
+          class="trnapp.bookstore.department.DepartmentHeadDerivedRoleTypeService">
+      <property name="departmentService" ref="departmentService"/>
+    </bean>
+
+    <bean class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter">
+      <property name="callbackService" ref="departmentHeadDerivedRoleTypeService" />
+      <property name="serviceNameSpaceURI" value="" />
+      <property name="localServiceName" value="departmentHeadDerivedRoleTypeService" />
+      <property name="serviceInterface" value="org.kuali.rice.kim.framework.role.RoleTypeService" />
+    </bean>
+    
+    <bean id="echoService" class="trnapp.bookstore.service.EchoServiceImpl"/>
+    
+    <bean id="echoServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+      <property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+          <property name="service" ref="echoService"/>
+          <property name="serviceNameSpaceURI" value="http://service.bookstore.trnapp/"/>
+          <property name="localServiceName" value="echoService" />
+          <property name="retryAttempts" value="1" />
+        </bean>
+      </property>
+    </bean>
+    
+    <bean id="bookService" class="trnapp.bookstore.service.BookServiceImpl"/>
+    
+    <bean id="bookServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+      <property name="serviceDefinition">
+        <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
+          <property name="service" ref="bookService"/>
+          <property name="serviceNameSpaceURI" value="http://service.bookstore.trnapp/"/>
+          <property name="localServiceName" value="bookService" />
+          <property name="busSecurity" value="false"/>
+          <property name="jaxWsService" value="true"/>
+        </bean>
+      </property>
+    </bean>
+
+</beans>

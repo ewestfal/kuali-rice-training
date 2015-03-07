@@ -1,0 +1,217 @@
+/***** Global, View, and Page Styles *****/
+
+body {
+	background-color: #A30234;
+}
+
+.uif-view {
+    margin-top: 84px;
+}
+
+.uif-pageContentWrapper, .uif-page {
+	margin: 0px;
+}
+
+/***** Header *****/
+
+header {
+    background-color: black;
+    height: 84px;
+    width: 100%;
+    top: 0px;
+    position: fixed;
+    margin: auto;
+    z-index: 2;
+}
+
+.header-logo {
+    width: 231px;
+    height: 84px;
+    background-image: url("../images/bookstore-header.png");
+    float: left;
+}
+
+.header-title {
+	margin-left: 20px;
+    font-family: Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 65px;
+    color: #FFFFFF;
+    float: left;
+    text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+}
+
+.header-container {
+    width: 940px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+nav {
+    float: right;
+}
+
+header nav li {
+    float: left;
+    text-transform: uppercase;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 25px;
+}
+
+header nav li > a {
+    padding-top: 28px;
+    padding-right: 21px;
+    padding-bottom: 28px;
+    padding-left: 21px;
+    color: #999;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    display: block;
+    text-decoration: none;
+}
+
+header nav li > a:hover,
+header nav li > a:focus,
+header nav li > a.active {
+    color: white;
+    text-decoration: none;
+}
+
+/***** Landing Page - Splash *****/
+
+#LandingPage .clearfix {
+	clear: none;
+}
+
+#Landing-Splash {
+    background-image: url("../images/back-splash.png");
+    height: 290px;
+    margin-bottom: 0px;
+}
+
+#Landing-Splash > .uif-boxLayout, .header-container, #Landing-Details > .uif-boxLayout, .quote-wrapper {
+	margin-left: auto;
+    margin-right: auto;
+	width: 940px;
+}
+
+#Landing > .uif-header, #LandingPage > .uif-header {
+	display: none;
+}
+
+#welcome-message_span {
+	font-family: Impact, Charcoal, sans-serif;
+	width: 430px;
+	height: 280px;
+	padding-top: 40px;
+	color: orange;
+}
+
+#welcome-message_span span {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#library-image {
+    margin-left: 465px;
+    margin-top: -300px;
+    position: absolute;
+	border: 1px solid #4C3C1B;
+    padding: 5px;
+    background-color: #EFEECB;
+	transform: rotate(5deg);
+	-ms-transform: rotate(5deg); /* IE 9 */
+	-moz-transform: rotate(5deg); /* Firefox */
+	-webkit-transform: rotate(5deg); /* Safari and Chrome */
+	-o-transform: rotate(5deg); /* Opera */
+}
+
+/***** Landing Page - Details *****/
+
+#Landing-Details {
+	background-color: white;
+	margin: 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#Landing-Details > .uif-header {
+	display: none;
+}
+
+.landing-feature {
+    width: 300px;
+    margin-bottom: 0;
+}
+
+.landing-feature h4 {
+    color: #9F0132;
+    font-size: 1.3em;
+    margin-bottom: .6em;
+}
+
+.landing-feature .uif-instructionalMessage {
+    font-size: 1em;
+    margin-bottom: 0;
+    padding-left: 64px;
+    min-height: 64px;
+    background-position: left top;
+    background-repeat: no-repeat;
+
+}
+
+#Landing-AuthorLookup .uif-instructionalMessage {
+	background-image: url("../images/author-lookup.png")
+}
+
+#Landing-BookLookup .uif-instructionalMessage {
+	background-image: url("../images/book-lookup.png")
+}
+
+#Landing-BookOrder .uif-instructionalMessage {
+	background-image: url("../images/book-order.png")
+}
+
+/***** Footer *****/
+
+footer blockquote {
+	font-family: Georgia, serif;
+	font-size: 18px;
+	font-style: italic;
+	width: 500px;
+	margin: 0.25em 0;
+	padding: 0.25em 60px;
+	line-height: 1.45;
+	position: relative;
+	color: #CCCCCC;
+}
+
+footer blockquote:before {
+	display: block;
+	content: "\201C";
+	font-size: 80px;
+	position: absolute;
+	left: 5px;
+	top: -20px;
+	color: #7a7a7a;
+}
+
+footer blockquote cite {
+	color: #999999;
+	font-size: 14px;
+	display: block;
+	margin-top: 5px;
+}
+ 
+footer blockquote cite:before {
+	content: "\2014 \2009";
+}

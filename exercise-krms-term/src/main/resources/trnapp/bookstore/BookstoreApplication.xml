@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="BookstoreView" abstract="true" parent="Uif-FormView">
+    <property name="additionalCssFiles">
+      <list>
+        <value>css/bookstore.css</value>
+        <value>css/slabtext.css</value>
+      </list>
+    </property>
+    <property name="additionalScriptFiles">
+      <list>
+        <value>scripts/bookstore.js</value>
+        <value>scripts/jquery.slabtext.js</value>
+      </list>
+    </property>
+    <property name="applicationHeader" ref="BookstoreHeader"/>
+    <property name="applicationFooter" ref="BookstoreFooter"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="singlePageView" value="true"/>
+  </bean>
+  
+  <bean id="BookstoreHeader" parent="Uif-GlobalApplicationHeader-parentBean"
+            p:template="/WEB-INF/ftl/bookstoreHeader.ftl"
+            p:templateName="bookstore_header"
+            p:render="true"/>
+            
+  <bean id="BookstoreFooter" parent="Uif-GlobalApplicationFooter-parentBean"
+            p:template="/WEB-INF/ftl/bookstoreFooter.ftl"
+            p:templateName="bookstore_footer"
+            p:render="true"/>
+
+  <bean id="Landing" parent="BookstoreView">
+    <property name="page">
+      <bean id="LandingPage" parent="Uif-Page">
+        <property name="items">
+          <list>
+            <ref bean="Landing-Splash"/>
+            <ref bean="Landing-Details"/>
+          </list>
+        </property>         
+      </bean>
+    </property>	 
+  </bean>
+  
+  <bean id="Landing-Splash" parent="Uif-VerticalBoxGroup">
+    <property name="items">
+      <list>
+        <bean id="welcome-message" parent="Uif-Message" p:messageText="Welcome!">
+          <!-- message text loaded with javascript and slabText plugin, see bookstore.js -->
+        </bean>
+        <bean id="library-image" parent="Uif-Image" p:source="../images/library.jpg"/>
+      </list>
+    </property>    
+  </bean>
+  
+  <bean id="Landing-FeatureBase" abstract="true" parent="Uif-HorizontalBoxSubSection">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>landing-feature</value>
+      </list>
+    </property>
+  </bean>
+  
+  
+  <bean id="Landing-Details" parent="Uif-VerticalBoxSection">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>landing-details</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean id="Landing-Details-Row1" parent="Uif-HorizontalBoxGroup">
+          <property name="items">
+            <list>
+              <bean id="Landing-AuthorLookup" parent="Landing-FeatureBase"
+                    p:headerText="[link='lookup?methodToCall=start&amp;dataObjectClassName=trnapp.bookstore.Author&amp;showMaintenanceLinks=true&amp;returnLocation=/trnapp/portal.do]Author Lookup[/link]"
+                    p:instructionalText="Search for all of your favorite authors. Do you like Stephen King? Search for him! Do you like Douglas Adams? You got it!!!"/>
+              <bean id="Landing-BookLookup" parent="Landing-FeatureBase"
+                    p:headerText="[link='lookup?methodToCall=start&amp;dataObjectClassName=trnapp.bookstore.Book&amp;showMaintenanceLinks=true&amp;returnLocation=/trnapp/portal.do]Book Lookup[/link]"
+                    p:instructionalText="Never has there been a library of books so expansive. Some people might even say that we're bigger than Amazon! Maybe we are, maybe we aren't...but come on in and find out for yourself."/>
+              <bean id="Landing-BookOrder" parent="Landing-FeatureBase"
+                    p:headerText="[link='bookOrder?methodToCall=docHandler&amp;command=initiate&amp;docTypeName=BookOrderDocumentType']Book Order[/link]"
+                    p:instructionalText="Looking for something we don't have in stock? Place an order! It's really easy. Just don't expect the orders to get fullfilled, that's not coming until Bookstore 2.0!"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

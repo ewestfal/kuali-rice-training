@@ -1,0 +1,72 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+
+Kuali Rice ArcheType Help
+
+This is the internal project configuration required by Kuali Rice based applications.
+
+It is usually desirable to put some of these parameters, such as datasource password,
+in configuration files outside of the project.
+
+-->
+<config>
+
+  <param name="rice.logging.configure">true</param>
+
+  <param name="location.mode">LOCAL</param>
+  <param name="coreservice.mode">LOCAL</param>
+  <param name="ken.mode">LOCAL</param>
+  <param name="kim.mode">LOCAL</param>
+  <param name="kew.mode">LOCAL</param>
+  <param name="krms.mode">LOCAL</param>
+  <param name="ksb.mode">LOCAL</param>
+
+  <param name="module.name">trnapp</param>
+  <param name="application.id">trnapp</param>
+  <param name="app.context.name">trnapp</param>
+
+  <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+  <param name="filtermapping.login.1">/*</param>
+
+  <!--
+    Turn off "development" mode so that services
+    are published to and consumed from the KSB
+  <param name="dev.mode">false</param>
+  -->
+  
+  <param name="dev.mode">true</param>
+
+      
+  <param name="datasource.ojb.platform">MySQL</param>
+
+    
+  <param name="datasource.url">jdbc:mysql://localhost:3306/trnrice</param>
+  <param name="datasource.username">trnrice</param>
+  <param name="datasource.password">trnrice</param>
+  
+  <param name="keystore.alias">rice</param>
+  <param name="keystore.file">${user.home}/kuali/main/dev/rice.keystore</param>
+  <param name="keystore.password">r1c3pw</param>
+  
+
+  <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+  <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
+  <param name="config.location">${alt.config.location}</param>
+  <param name="version">trnapp :: ${project.version} :: ${kuali.build.timestamp}</param>
+</config>

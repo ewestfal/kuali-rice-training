@@ -1,0 +1,1356 @@
+################
+# Exercise - 1 #
+################
+
+~~~~~~~
+~ 1.1 ~
+~~~~~~~
+
+https://free1.projectlocker.com/ewestfal/rice_training/svn
+
+################
+# Exercise - 2 #
+################
+
+~~~~~~~
+~ 2.1 ~
+~~~~~~~
+
+mvn validate -Pdb,mysql -Dimpex.dba.password=NONE
+
+~~~~~~~
+~ 2.2 ~
+~~~~~~~
+
+mvn clean install -Pdb,mysql -Dimpex.username=trnrice -Dimpex.password=trnrice -Dimpex.database=trnrice -Dimpex.dba.password=NONE
+
+~~~~~~~
+~ 2.3 ~
+~~~~~~~
+
+...
+<param name="application.host">http://localhost</param>
+...
+<param name="datasource.username">trnrice</param>
+<param name="datasource.password">trnrice</param>
+...
+<param name="keystore.alias">rice</param>
+<param name="keystore.password">r1c3pw</param>
+...
+<param name="encryption.key">7IC64w6ksLU=</param>
+...
+
+################
+# Exercise - 3 #
+################
+
+~~~~~~~
+~ 3.1 ~
+~~~~~~~
+
+mvn archetype:generate -DarchetypeGroupId=org.kuali.rice -DarchetypeArtifactId=rice-archetype-quickstart -DarchetypeVersion=2.2.1 -DgroupId=trnapp -DartifactId=trnapp -Dversion=1.0-SNAPSHOT -Ddatasource_ojb_platform=MySQL -Ddatasource_url=jdbc:mysql://localhost:3306/trnrice -Ddatasource_username=trnrice -Ddatasource_password=trnrice
+
+~~~~~~~
+~ 3.2 ~
+~~~~~~~
+
+-Xmx512m -XX:MaxPermSize=256m
+
+################
+# Exercise - 4 #
+################
+
+~~~~~~~
+~ 4.1 ~
+~~~~~~~
+
+<class-descriptor class="trnapp.bookstore.Book" table="book_t">
+  <field-descriptor name="id" column="book_id" jdbc-type="BIGINT"
+                    primarykey="true" autoincrement="true" sequence-name="book_s"/>
+  <field-descriptor name="title" column="title" jdbc-type="VARCHAR" />
+  <field-descriptor name="author" column="author" jdbc-type="VARCHAR" />
+  <field-descriptor name="category" column="category" jdbc-type="VARCHAR" />
+  <field-descriptor name="isbn" column="isbn" jdbc-type="VARCHAR" />
+  <field-descriptor name="publisher" column="publisher" jdbc-type="VARCHAR" />
+  <field-descriptor name="publicationDate" column="pub_date" jdbc-type="DATE" />
+  <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR" />
+  <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+                    locking="true" />
+</class-descriptor>
+
+~~~~~~~
+~ 4.2 ~
+~~~~~~~
+
+<property name="databaseRepositoryFilePaths">
+  <list>
+    <value>trnapp/bookstore/OJB-repository-bookstore.xml</value>
+  </list>
+</property>
+<property name="packagePrefixes">
+  <list>
+    <value>trnapp.bookstore</value>
+  </list>
+</property>
+
+################
+# Exercise - 5 #
+################
+
+~~~~~~~
+~ 5.1 ~
+~~~~~~~
+
+<field-descriptor name="authorId" column="author_id" jdbc-type="BIGINT" />
+
+~~~~~~~
+~ 5.2 ~
+~~~~~~~
+
+<reference-descriptor
+     name="author"
+     class-ref="trnapp.bookstore.Author"
+     auto-retrieve="true"
+     auto-delete="false"
+     auto-update="true">
+  <foreignkey field-ref="authorId"/>
+</reference-descriptor>
+
+################
+# Exercise - 6 #
+################
+
+~~~~~~~
+~ 6.1 ~
+~~~~~~~
+
+<property name="initializeDataDictionary" value="true"/>
+<property name="dataDictionaryPackages">
+  <list>
+    <value>classpath:trnapp/bookstore/Author.xml</value>
+  </list>
+</property>
+
+~~~~~~~
+~ 6.2 ~
+~~~~~~~
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- Bean definitions go here -->
+
+</beans>
+
+~~~~~~~
+~ 6.3 ~
+~~~~~~~
+
+<bean id="Book-publicationDate" parent="AttributeDefinition"
+      p:name="publicationDate"
+      p:label="Publication Date"
+      p:shortLabel="Pub Date"
+      p:maxLength="10">
+  <property name="controlField">
+    <bean parent="Uif-DateControl" p:size="30"/>
+  </property>
+</bean>
+
+#################
+# Exercise - 7 #
+#################
+
+~~~~~~~~
+~ 7.1 ~
+~~~~~~~~
+
+public String getName() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(lastName).append(", ");
+    builder.append(firstName);
+    if (middleName != null && !"".equals(middleName.trim())) {
+        builder.append(" ").append(middleName);
+    }
+    return builder.toString();
+}
+
+~~~~~~~~
+~ 7.2 ~
+~~~~~~~~
+
+<bean id="Book-author-name" parent="AttributeDefinition"
+      p:name="author.name"
+      p:label="Author Name"
+      p:shortLabel="Author Name">
+  <property name="controlField">
+    <bean parent="Uif-TextControl" p:size="30"/>
+  </property>    
+</bean>
+
+~~~~~~~~
+~ 7.3 ~
+~~~~~~~~
+
+<bean parent="Uif-InputField" p:propertyName="author.name" />
+
+#################
+# Exercise - 8 #
+#################
+
+
+~~~~~~~~
+~ 8.1 ~
+~~~~~~~~
+
+@Override
+public boolean validateSearchParameters(LookupForm form,
+        Map<String, String> parameters) {
+    String category = parameters.get("category");
+    if (category != null && category.contains("*")) {
+        GlobalVariables.getMessageMap().putError("category",
+                RiceKeyConstants.ERROR_CUSTOM,
+                "Category does not support wildcards on search.");
+        return false;
+    }
+    return super.validateSearchParameters(form, parameters);
+}
+
+~~~~~~~~
+~ 8.2 ~
+~~~~~~~~
+
+<property name="viewHelperServiceClass"
+          value="trnapp.bookstore.BookLookupable" />
+
+#################
+# Exercise - 11 #
+#################
+
+~~~~~~~~
+~ 11.1 ~
+~~~~~~~~
+
+private List<Chapter> chapters = new ArrayList<Chapter>();
+
+~~~~~~~~
+~ 11.2 ~
+~~~~~~~~
+
+<class-descriptor class="trnapp.bookstore.Chapter" table="chapter_t">
+  <field-descriptor name="id" column="chapter_id" jdbc-type="BIGINT"
+                    primarykey="true" autoincrement="true"
+                    sequence-name="chapter_s"/>
+  <field-descriptor name="title" column="title" jdbc-type="VARCHAR" />
+  <field-descriptor name="number" column="number" jdbc-type="INTEGER" />
+  <field-descriptor name="bookId" column="book_id" jdbc-type="BIGINT" />
+  <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+  <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+                    locking="true" />
+</class-descriptor>
+
+~~~~~~~~
+~ 11.3 ~
+~~~~~~~~
+
+<collection-descriptor name="chapters"
+    element-class-ref="trnapp.bookstore.Chapter"
+    collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+    proxy="true"
+    auto-retrieve="true"
+    auto-update="object"
+    auto-delete="object">
+  <orderby name="number" sort="ASC" />
+  <inverse-foreignkey field-ref="bookId" />
+</collection-descriptor>
+
+~~~~~~~~
+~ 11.4 ~
+~~~~~~~~
+
+<value>classpath:trnapp/bookstore/Chapter.xml</value>
+
+~~~~~~~~
+~ 11.5 ~
+~~~~~~~~
+
+<property name="collections">
+  <list>
+    <bean parent="CollectionDefinition"
+      p:name="chapters"
+      p:label="Chapters"
+      p:shortLabel="Chapters"
+      p:elementLabel="Chapter"/>
+  </list>
+</property>
+
+~~~~~~~~
+~ 11.6 ~
+~~~~~~~~
+
+<bean parent="Uif-MaintenanceStackedCollectionSection">
+  <property name="headerText" value="Chapters"/>
+  <property name="collectionObjectClass" value="trnapp.bookstore.Chapter"/>
+  <property name="propertyName" value="chapters"/>
+  <property name="items">
+    <list>
+      <bean parent="Uif-InputField"
+            p:propertyName="number" p:required="true"/>
+      <bean parent="Uif-InputField"
+            p:propertyName="title" p:required="true"/>
+    </list>
+  </property>
+</bean>
+
+
+~~~~~~~~
+~ 11.7 ~
+~~~~~~~~
+
+<bean id="Book-Chapter-Section"
+      parent="Uif-Disclosure-StackedCollectionSection">
+  <property name="headerText" value="Chapters"/>
+  <property name="collectionObjectClass" value="trnapp.bookstore.Chapter"/>
+  <property name="propertyName" value="chapters"/>
+  <property name="items">
+    <list>
+      <bean parent="Uif-InputField" p:propertyName="number"/>
+      <bean parent="Uif-InputField" p:propertyName="title"/>
+    </list>
+  </property>
+</bean>
+
+#################
+# Exercise - 12 #
+#################
+
+~~~~~~~~
+~ 12.1 ~
+~~~~~~~~
+
+@Override
+public void processAfterCopy(MaintenanceDocument document,
+        Map<String, String[]> requestParameters) {      
+    Book book = ((Book)document.getNewMaintainableObject().getDataObject());
+    book.setIsbn(null);
+    super.processAfterCopy(document, requestParameters);
+}
+
+#################
+# Exercise - 13 #
+#################
+
+~~~~~~~~
+~ 13.1 ~
+~~~~~~~~
+
+<class-descriptor class="trnapp.bookstore.BookOrderDocument" table="book_order_doc_t">
+  <field-descriptor name="documentNumber" column="doc_hdr_id"
+    jdbc-type="VARCHAR" primarykey="true"/>
+  <field-descriptor name="versionNumber" column="ver_nbr"
+    jdbc-type="BIGINT" locking="true"/>
+  <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+  <reference-descriptor name="documentHeader"
+      class-ref="org.kuali.rice.krad.bo.DocumentHeader"
+      auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+    <foreignkey field-ref="documentNumber"/>
+  </reference-descriptor>
+</class-descriptor>
+
+~~~~~~~~
+~ 13.2 ~
+~~~~~~~~
+
+@Controller
+@RequestMapping(value = "/bookOrder")
+
+~~~~~~~~
+~ 13.3 ~
+~~~~~~~~
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+~~~~~~~~
+~ 13.4 ~
+~~~~~~~~
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <context:component-scan base-package="trnapp.bookstore"/>
+
+</beans>
+
+~~~~~~~~
+~ 13.5 ~
+~~~~~~~~
+
+<servlet>
+ <servlet-name>krad</servlet-name>
+ <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+ <load-on-startup>3</load-on-startup>
+ <init-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>WEB-INF/krad-servlet.xml,WEB-INF/trnapp-servlet.xml</param-value>    
+ </init-param>
+</servlet>
+
+~~~~~~~~
+~ 13.6 ~
+~~~~~~~~
+
+<portal:portalLink displayTitle="true" title="Book Order"
+  url="${ConfigProperties.application.url}/kr-krad/bookOrder?methodToCall=docHandler&command=initiate&docTypeName=BookOrderDocumentType"/>
+
+#################
+# Exercise - 14 #
+#################
+
+~~~~~~~~
+~ 14.1 ~
+~~~~~~~~
+
+@Override
+protected void prePersist() {
+    refreshBookIfNeeded();
+    super.prePersist();
+}
+
+@Override
+protected void preUpdate() {
+    refreshBookIfNeeded();
+    super.preUpdate();
+}
+
+private void refreshBookIfNeeded() {
+    if (bookId != null && book == null) {
+        refreshReferenceObject("book");
+    }
+}
+
+~~~~~~~~
+~ 14.2 ~
+~~~~~~~~
+
+private List<BookOrderEntry> bookOrderEntries = new ArrayList<BookOrderEntry>();
+
+~~~~~~~~
+~ 14.3 ~
+~~~~~~~~
+
+<class-descriptor class="trnapp.bookstore.BookOrderEntry"
+    table="book_order_entry_t">
+  <field-descriptor name="id" column="book_order_entry_id" jdbc-type="BIGINT"
+      primarykey="true" autoincrement="true"
+      sequence-name="book_order_entry_s"/>
+  <field-descriptor name="documentId" column="doc_hdr_id"
+      jdbc-type="VARCHAR"/>
+  <field-descriptor name="bookId" column="book_id" jdbc-type="BIGINT"/>
+  <field-descriptor name="quantity" column="quantity" jdbc-type="INTEGER"/>
+  <field-descriptor name="versionNumber" column="ver_nbr" jdbc-type="BIGINT"
+      locking="true"/>
+  <field-descriptor name="objectId" column="obj_id" jdbc-type="VARCHAR"/>
+  <reference-descriptor name="book" class-ref="trnapp.bookstore.Book"
+      auto-retrieve="true" auto-update="object" auto-delete="object"
+      proxy="true" >
+    <foreignkey field-ref="bookId" />
+  </reference-descriptor>    
+</class-descriptor>
+
+~~~~~~~~
+~ 14.4 ~
+~~~~~~~~
+
+<collection-descriptor
+    name="bookOrderEntries"
+    element-class-ref="trnapp.bookstore.BookOrderEntry"
+    collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+    proxy="true"
+    auto-retrieve="true"
+    auto-update="object"
+    auto-delete="object">       
+  <inverse-foreignkey field-ref="documentId" />
+</collection-descriptor>    
+
+~~~~~~~~
+~ 14.5 ~
+~~~~~~~~
+
+<bean id="BookOrder-BookOrderEntries" parent="Uif-Disclosure-TableCollectionSection">        
+  <property name="layoutManager.generateAutoSequence" value="true"/>
+  <property name="headerText" value="Book Order Entries"/>
+  <property name="propertyName" value="bookOrderEntries"/>
+  <property name="collectionObjectClass" value="trnapp.bookstore.BookOrderEntry"/>
+  <property name="items">
+    <list>
+      <bean parent="Uif-InputField" p:propertyName="bookId"/>
+      <bean parent="Uif-InputField" p:propertyName="quantity"/>              
+    </list>
+  </property>
+</bean>
+
+
+#################
+# Exercise - 15 #
+#################
+
+~~~~~~~~
+~ 15.1 ~
+~~~~~~~~
+
+<property name="businessRulesClass"
+          value="trnapp.bookstore.BookOrderDocumentRule"/>
+
+#################
+# Exercise - 16 #
+#################
+
+~~~~~~~~
+~ 16.1 ~
+~~~~~~~~
+
+<header>
+  <div class="header-container">
+    <div>
+      <div class="header-logo"></div>
+      <div class="header-title">Bookstore!</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a id="home-link" href="${homeLink}">Home</a></li>
+        <li><a id="old-portal-link" href="${oldPortalLink}">Old Portal</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+~~~~~~~~
+~ 16.2 ~
+~~~~~~~~
+
+<bean id="Landing-Splash" parent="Uif-VerticalBoxGroup">
+  <property name="items">
+    <list>
+      <bean id="welcome-message" parent="Uif-Message"
+            p:messageText="Welcome!"/>
+      <bean id="library-image" parent="Uif-Image"
+            p:source="../images/library.jpg"/>
+    </list>
+  </property>    
+</bean>
+
+~~~~~~~~
+~ 16.3 ~
+~~~~~~~~
+
+<ref bean="Landing-Splash"/>
+
+~~~~~~~~
+~ 16.4 ~
+~~~~~~~~
+
+#library-image {
+    margin-left: 465px;
+    margin-top: -300px;
+    position: absolute;
+    border: 1px solid #4C3C1B;
+    padding: 5px;
+    background-color: #EFEECB;
+    transform: rotate(5deg);
+    -ms-transform: rotate(5deg); /* IE 9 */
+    -moz-transform: rotate(5deg); /* Firefox */
+    -webkit-transform: rotate(5deg); /* Safari and Chrome */
+    -o-transform: rotate(5deg); /* Opera */
+}
+
+~~~~~~~~
+~ 16.5 ~
+~~~~~~~~
+
+jQuery(document).ready(function() {
+    var slabStart = "<span class='slabtext'>",
+    slabEnd = "</span>",
+    txt = [
+        "Welcome to the world's",
+        "best bookstore!",
+        "Come on in & check out what we've got.", 
+        "You won't be dissapointed!"];
+    var slabTxt = slabStart + txt.join(slabEnd + slabStart) + slabEnd;
+    jQuery("#welcome-message_span").html(slabTxt).slabText();
+});
+
+~~~~~~~~
+~ 16.6 ~
+~~~~~~~~
+
+<bean id="Landing-FeatureBase" abstract="true"
+      parent="Uif-HorizontalBoxSubSection">
+  <property name="cssClasses">
+    <list merge="true">
+      <value>landing-feature</value>
+    </list>
+  </property>
+</bean>
+
+~~~~~~~~
+~ 16.7 ~
+~~~~~~~~
+
+<bean id="Landing-Details" parent="Uif-VerticalBoxSection">
+  <property name="items">
+    <list>
+      <bean id="Landing-Details-Row1" parent="Uif-HorizontalBoxGroup">
+        <property name="items">
+          <list>
+            <bean id="Landing-AuthorLookup" parent="Landing-FeatureBase"
+                  p:headerText="Author Lookup"
+                  p:instructionalText="..."/>
+            <bean id="Landing-BookLookup" parent="Landing-FeatureBase"
+                  p:headerText="Book Lookup"
+                  p:instructionalText="..."/>
+            <bean id="Landing-BookOrder" parent="Landing-FeatureBase"
+                  p:headerText="Book Order"
+                  p:instructionalText="..."/>
+          </list>
+        </property>
+      </bean>
+    </list>
+  </property>
+</bean>
+
+~~~~~~~~
+~ 16.8 ~
+~~~~~~~~
+
+p:headerText="[link='lookup?methodToCall=start&amp;dataObjectClassName=trnapp.bookstore.Author&amp;showMaintenanceLinks=true&amp;returnLocation=/trnapp/portal.do]Author Lookup[/link]"
+
+~~~~~~~~
+~ 16.9 ~
+~~~~~~~~
+
+<footer>
+  <div class="quote-wrapper">
+    <blockquote>The man who does not read good books has no advantage over the man who can't read them.<cite>Mark Twain</cite></blockquote> 
+  </div>
+</footer>
+
+~~~~~~~~~
+~ 16.10 ~
+~~~~~~~~~
+
+body {
+    background-color: #A30234;
+}
+
+~~~~~~~~~
+~ 16.11 ~
+~~~~~~~~~
+
+.uif-view {
+    margin-top: 84px;
+}
+
+~~~~~~~~~
+~ 16.12 ~
+~~~~~~~~~
+
+header {
+    ...
+    top: 0px;
+    position: fixed;
+    margin: auto;
+    z-index: 2;
+}
+
+#################
+# Exercise - 19 #
+#################
+
+~~~~~~~~
+~ 19.1 ~
+~~~~~~~~
+         
+private DepartmentService departmentService;
+
+public void setDepartmentService(DepartmentService departmentService) {
+    this.departmentService = departmentService;
+}
+
+public DepartmentService getDepartmentService() {
+    return departmentService;
+}
+
+~~~~~~~~
+~ 19.2 ~
+~~~~~~~~
+
+@Override
+protected List<RemotableAttributeError> validateNonDataDictionaryAttribute(
+        KimTypeAttribute attr, String key, String value) {
+    List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+    if ("department".equals(key)) {
+        if (value == null || "".equals(value.trim())) {
+            RemotableAttributeError.Builder errorBuilder =
+                    RemotableAttributeError.Builder.create(key, "Department is required.");
+            errors.add(errorBuilder.build());
+        } else {
+            Department department = departmentService.getDepartmentByCode(value);
+            if (department == null) {
+                RemotableAttributeError.Builder errorBuilder =
+                        RemotableAttributeError.Builder.create(key,
+                                "Failed to locate department code '" + value + "'");
+                errors.add(errorBuilder.build());
+            }
+        }
+    }
+    return errors;
+}
+
+~~~~~~~~
+~ 19.3 ~
+~~~~~~~~
+
+@Override
+protected boolean performMatch(Map<String, String> inputAttributes,
+        Map<String, String> storedAttributes) {
+    if ( inputAttributes == null || storedAttributes == null ) {
+        return true;
+    }
+    // we know that we only have one qualifier, the "department" qualifier
+    String givenDepartment = inputAttributes.get("department");
+    String roleDepartment = storedAttributes.get("department");     
+    // if they are an exact match, return true
+    if (roleDepartment.equalsIgnoreCase(givenDepartment)) {
+        return true;
+    }
+    // otherwise, check the hierarchy
+    List<Department> childDepartments = 
+            departmentService.getChildDepartments(givenDepartment);
+    for (Department department : childDepartments) {
+        if (department.getCode().equalsIgnoreCase(roleDepartment)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+~~~~~~~~
+~ 19.4 ~
+~~~~~~~~
+
+<bean id="departmentRoleTypeService"
+      class="trnapp.bookstore.department.DepartmentRoleTypeService">
+  <property name="departmentService" ref="departmentService"/>
+</bean>
+
+<bean class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter">
+  <property name="callbackService" ref="departmentRoleTypeService" />
+  <property name="serviceNameSpaceURI" value="" />
+  <property name="localServiceName" value="departmentRoleTypeService" />
+  <property name="serviceInterface" value="org.kuali.rice.kim.framework.role.RoleTypeService" />
+</bean>
+
+#################
+# Exercise - 20 #
+#################
+
+~~~~~~~~
+~ 20.1 ~
+~~~~~~~~
+
+<field-descriptor
+     name="departmentHeadPrincipalId"
+     column="dept_hd_prncpl_id"
+     jdbc-type="VARCHAR" />
+
+~~~~~~~~
+~ 20.2 ~
+~~~~~~~~
+
+@Override
+public boolean isDerivedRoleType() {
+    return true;
+}
+
+~~~~~~~~
+~ 20.3 ~
+~~~~~~~~
+
+@Override
+public List<RoleMembership> getRoleMembersFromDerivedRole(
+        String namespaceCode, String roleName,
+        Map<String, String> qualification) {
+    String departmentCode = null;
+    if (qualification != null) {
+        departmentCode = qualification.get("department");
+    }
+    List<Department> departmentsToSearch = new ArrayList<Department>();
+    if (departmentCode == null) {
+        departmentsToSearch.addAll(
+                KRADServiceLocator.getBusinessObjectService().findAll(Department.class));
+    } else {
+        Department dept = getDepartmentService().getDepartmentByCode(departmentCode);
+        departmentsToSearch = getDepartmentHierarchy(dept);
+    }
+    List<RoleMembership> members = new ArrayList<RoleMembership>();
+    for (Department department : departmentsToSearch) {
+        if (department.getDepartmentHeadPrincipalId() != null) {
+            RoleMembership member = RoleMembership.Builder.create(null,
+                    null,
+                    department.getDepartmentHeadPrincipalId(),
+                    MemberType.PRINCIPAL,
+                    null).build();
+            members.add(member);
+        }
+    }
+    return members;
+}
+
+private List<Department> getDepartmentHierarchy(Department dept) {
+    List<Department> depts = new ArrayList<Department>();
+    if (dept != null) {
+        depts.add(dept);
+        List<Department> children = getDepartmentService().getChildDepartments(dept.getCode());
+        depts.addAll(children);
+    }
+    return depts;
+}
+
+~~~~~~~~
+~ 20.4 ~
+~~~~~~~~
+
+<bean id="departmentHeadDerivedRoleTypeService"
+      class="trnapp.bookstore.department.DepartmentHeadDerivedRoleTypeService">
+  <property name="departmentService" ref="departmentService"/>
+</bean>
+
+<bean class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter">
+  <property name="callbackService" ref="departmentHeadDerivedRoleTypeService" />
+  <property name="serviceNameSpaceURI" value="" />
+  <property name="localServiceName" value="departmentHeadDerivedRoleTypeService" />
+  <property name="serviceInterface" value="org.kuali.rice.kim.framework.role.RoleTypeService" />
+</bean>
+
+
+~~~~~~~~
+~ 20.5 ~
+~~~~~~~~
+
+private List<String> getDerivedDepartmentHeadRoleId() {
+    String roleId =
+        getRoleService().getRoleIdByNamespaceCodeAndName("TRNAPP", "Department Head (Derived)");
+    assertNotNull(roleId);
+    return Collections.singletonList(roleId);
+}
+
+
+#################
+# Exercise - 21 #
+#################
+
+~~~~~~~~
+~ 21.1 ~
+~~~~~~~~
+
+<!doctype html>  
+<html lang="en">  
+  <head>  
+    <title>Send a New Book Notification</title>  
+  </head>  
+  <body>  
+    <form name="notify_new_book" action="notify_new_book" method="post">
+      <div><label>Title</label><input type="text" name="title"/></div>
+      <div><label>Author</label><input type="text" name="author"/></div>
+      <textarea columns="100" rows="10" name="message"
+                placeholder="Enter a message here"></textarea>
+      <div><input type="submit" value="Submit"/></div>
+    </form>
+  </body>  
+</html>  
+  
+~~~~~~~~
+~ 21.2 ~
+~~~~~~~~
+
+private SendNotificationService getNotificationService() {
+    return GlobalResourceLoader.getService(
+            KenApiConstants.ServiceNames.SEND_NOTIFICATION_SERVICE);
+}
+
+~~~~~~~~
+~ 21.3 ~
+~~~~~~~~
+
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+    String title = req.getParameter("title");
+    String author = req.getParameter("author");
+    String message = req.getParameter("message");
+    SendNotificationService service = getNotificationService();
+    service.invoke(generateNotificationXml(title, author, message));
+    resp.getOutputStream().print("notification sent");
+}
+
+~~~~~~~~
+~ 21.4 ~
+~~~~~~~~
+
+private String generateNotificationXml(
+        String title, String author, String message) {
+    // TODO return the notification XML
+}
+
+~~~~~~~~
+~ 21.5 ~
+~~~~~~~~
+
+<notification xmlns="ns:notification/NotificationRequest"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="ns:notification/NotificationRequest
+                                  resource:notification/NotificationRequest">
+  <channel>Library Events Channel</channel>
+  <producer>University Library System</producer>
+  <senders></senders>
+  <recipients>
+    <user>fran</user>
+    <user>frank</user>
+    <user>erin</user>
+  </recipients>
+  <deliveryType>fyi</deliveryType>
+  <priority>Normal</priority>
+  <title>New Book</title>
+  <contentType>NewBook</contentType>
+  <content xmlns="ns:notification/ContentTypeNewBook"
+           xsi:schemaLocation="ns:notification/ContentTypeNewBook
+                               resource:notification/ContentTypeNewBook">
+    <title>...</title>
+    <author>...</author>
+    <message>...</message>
+  </content>
+</notification>
+
+~~~~~~~~
+~ 21.6 ~
+~~~~~~~~
+
+<servlet>
+  <servlet-name>notify_new_book</servlet-name>
+  <servlet-class>trnapp.bookstore.notify.NotifyNewBookServlet</servlet-class>
+</servlet>
+
+~~~~~~~~
+~ 21.7 ~
+~~~~~~~~
+
+<servlet-mapping>
+  <servlet-name>notify_new_book</servlet-name>
+  <url-pattern>/notify_new_book</url-pattern>
+</servlet-mapping>
+
+#################
+# Exercise - 22 #
+#################
+
+~~~~~~~~
+~ 22.1 ~
+~~~~~~~~
+
+<bean id="echoService"
+      class="trnapp.bookstore.service.EchoServiceImpl"/>
+
+
+~~~~~~~~
+~ 22.2 ~
+~~~~~~~~
+
+<bean id="echoServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+  <property name="serviceDefinition">
+    <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+      <property name="service" ref="echoService"/>
+      <property name="serviceNameSpaceURI" value="http://service.bookstore.trnapp/"/>
+      <property name="localServiceName" value="echoService" />
+      <property name="retryAttempts" value="1" />
+    </bean>
+  </property>
+</bean>
+
+~~~~~~~~
+~ 22.3 ~
+~~~~~~~~
+
+<param name="keystore.alias">rice</param>
+<param name="keystore.file">${user.home}/kuali/main/dev/rice.keystore</param>
+<param name="keystore.password">r1c3pw</param>
+
+~~~~~~~~
+~ 22.4 ~
+~~~~~~~~
+
+mvn –Djetty.port=9000 jetty:run
+
+~~~~~~~~
+~ 22.5 ~
+~~~~~~~~
+
+<bean id="bookService"
+      class="trnapp.bookstore.service.BookServiceImpl"/>
+
+~~~~~~~~
+~ 22.6 ~
+~~~~~~~~
+
+<bean id="bookServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+  <property name="serviceDefinition">
+    <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">
+      <property name="service" ref="bookService"/>
+      <property name="serviceNameSpaceURI" value="http://service.bookstore.trnapp/"/>
+      <property name="localServiceName" value="bookService" />
+      <property name="busSecurity" value="false"/>
+      <property name="jaxWsService" value="true"/>
+    </bean>
+  </property>
+</bean>
+
+#################
+# Exercise - 24 #
+#################
+
+~~~~~~~~
+~ 24.1 ~
+~~~~~~~~
+
+<documentContent><applicationContent><org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>
+  <document class="trnapp.bookstore.BookOrderDocument">
+    <bookOrderEntries>
+      <trnapp.bookstore.BookOrderEntry>
+        <id>14</id>
+        <documentId>3115</documentId>
+        <bookId>24</bookId>
+        <quantity>5</quantity>
+        <book>
+          <title>The Hitchhikers Guide to the Galaxy</title>
+          <category>Science Fiction</category>
+          <author>
+            <id>14</id>
+            <firstName>Douglas</firstName>
+            <lastName>Adams</lastName>
+            ...
+          </author>
+        </book>
+        ...
+      </trnapp.bookstore.BookOrderEntry>
+      ...
+    </bookOrderEntries>
+  </document>
+</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer></applicationContent></documentContent>
+
+~~~~~~~~
+~ 24.2 ~
+~~~~~~~~
+
+<docHandler>${application.url}/kr-krad/bookOrder?methodToCall=docHandler</docHandler>
+
+~~~~~~~~
+~ 24.3 ~
+~~~~~~~~
+
+<responsibility>
+  <groupName namespace="TRNAPP">Accounts Payable</groupName>
+  <actionRequested>A</actionRequested>
+</responsibility>
+
+~~~~~~~~
+~ 24.4 ~
+~~~~~~~~
+
+<groups xmlns="ns:workflow/Group" 
+        xsi:schemaLocation="ns:workflow/Group resource:Group">
+  <group>
+    <namespace>TRNAPP</namespace>
+    <name>Accounts Payable</name>
+    <members>
+      <principalName>user3</principalName>
+    </members>
+  </group>
+</groups>
+
+~~~~~~~~
+~ 24.5 ~
+~~~~~~~~
+
+<ruleAttributes 
+  xmlns="ns:workflow/RuleAttribute" 
+  xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleAttribute">
+...
+</ruleAttributes>
+
+~~~~~~~~
+~ 24.6 ~
+~~~~~~~~
+
+<ruleAttribute>
+  <name>BookCategoryAttribute</name>
+  <label>Book Category Attribute</label>
+  <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
+  <type>RuleXmlAttribute</type>
+  <routingConfig>
+    <fieldDef name="category" title="Category" workflowType="RULE">
+      <display>
+        <type>text</type>
+      </display>
+      <validation required="true" />
+      <fieldEvaluation>
+        <xpathexpression>//book/category = wf:ruledata('category')</xpathexpression>
+      </fieldEvaluation>
+    </fieldDef>
+  </routingConfig>
+</ruleAttribute>
+
+~~~~~~~~
+~ 24.7 ~
+~~~~~~~~
+
+<ruleTemplate>
+  <name>WarehouseProcessingTemplate</name>
+  <description>Warehouse Processing Rule Template</description>
+  <attributes>
+    <attribute>
+      <name>BookCategoryAttribute</name>
+    </attribute>
+  </attributes>
+</ruleTemplate>
+
+~~~~~~~~
+~ 24.8 ~
+~~~~~~~~
+
+<rule>
+  <documentType>BookOrderDocumentType</documentType>
+  <ruleTemplate>WarehouseProcessingTemplate</ruleTemplate>
+  <description>Warehouse processing for Photography</description>
+  <forceAction>true</forceAction>
+  <ruleExtensions>
+    <ruleExtension>
+      <attribute>BookCategoryAttribute</attribute>
+      <ruleTemplate>WarehouseProcessingTemplate</ruleTemplate>
+      <ruleExtensionValues>
+        <ruleExtensionValue>
+          <key>category</key>
+          <value>Photography</value>
+        </ruleExtensionValue>
+      </ruleExtensionValues>
+    </ruleExtension>
+  </ruleExtensions>
+  <responsibilities>
+    <responsibility>
+      <principalName>user4</principalName>
+      <actionRequested>A</actionRequested>
+    </responsibility>
+  </responsibilities>
+</rule>
+
+#################
+# Exercise - 25 #
+#################
+
+~~~~~~~~
+~ 25.1 ~
+~~~~~~~~
+
+java –jar fakeSMTP-1.0.jar
+
+~~~~~~~~
+~ 25.2 ~
+~~~~~~~~
+
+<param name="mail.smtp.host">localhost</param>
+<param name="mail.smtp.port">2555</param>
+
+#################
+# Exercise - 26 #
+#################
+
+~~~~~~~~
+~ 26.1 ~
+~~~~~~~~
+
+<bean id="bookCategoryRoleTypeService"
+      class="org.kuali.rice.kns.kim.role.RoleTypeServiceBase"/>
+
+
+~~~~~~~~
+~ 26.2 ~
+~~~~~~~~
+
+<bean class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter">
+  <property name="callbackService" ref="bookCategoryRoleTypeService" />
+  <property name="serviceNameSpaceURI" value="" />
+  <property name="localServiceName" value="bookCategoryRoleTypeService" />
+  <property name="serviceInterface"
+            value="org.kuali.rice.kim.framework.role.RoleTypeService" />
+</bean>
+
+~~~~~~~~
+~ 26.3 ~
+~~~~~~~~
+
+<routePath>
+  <start name="AdHoc" nextNode="Fiscal Approval" />
+  <requests name="Fiscal Approval" nextNode="Warehouse Processing" />
+  <role name="Warehouse Processing" />
+</routePath>
+
+~~~~~~~~
+~ 26.4 ~
+~~~~~~~~
+
+<role name="Warehouse Processing">
+  <activationType>P</activationType>
+  <qualifierResolver>BookCategoryQualifierResolver</qualifierResolver>
+</role>
+
+~~~~~~~~
+~ 26.5 ~
+~~~~~~~~
+
+<ruleAttributes xmlns="ns:workflow/RuleAttribute"
+    xsi:schemaLocation="ns:workflow/RuleAttribute RuleAttribute">
+  <ruleAttribute>
+    <name>BookCategoryQualifierResolver</name>
+    <className>org.kuali.rice.kew.role.XPathQualifierResolver</className>
+    <label>BookCategoryQualifierResolver</label>
+    <type>QualifierResolver</type>
+    <resolverConfig>
+      <baseXPathExpression>//book</baseXPathExpression>
+      <attributes name="category">
+        <xPathExpression>./category</xPathExpression>
+      </attributes>
+    </resolverConfig>
+  </ruleAttribute>
+</ruleAttributes>
+
+#################
+# Exercise - 29 #
+#################
+
+~~~~~~~~
+~ 29.1 ~
+~~~~~~~~
+
+<fieldDef name="emailAddress" title="Email Address">
+  <display>
+    <type>text</type>
+  </display>
+  <validation required="true">
+    <regex>^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$</regex>
+    <message>Enter a valid email address.</message>
+  </validation>
+</fieldDef>
+
+~~~~~~~~
+~ 29.2 ~
+~~~~~~~~
+
+<tr>
+  <td class="thnormal">
+    <xsl:call-template name="widget_render">
+      <xsl:with-param name="fieldName" select="'emailAddress'" />
+      <xsl:with-param name="renderCmd" select="'title'" />
+    </xsl:call-template>
+    <font color="#ff0000">*</font>
+  </td>
+  <td class="datacell">
+    <xsl:call-template name="widget_render">
+      <xsl:with-param name="fieldName" select="'emailAddress'" />
+      <xsl:with-param name="renderCmd" select="'input'" />
+      <xsl:with-param name="readOnly" select="$isPastInitiated" />
+    </xsl:call-template>
+  </td>
+</tr>
+
+#################
+# Exercise - 30 #
+#################
+
+~~~~~~~~
+~ 30.1 ~
+~~~~~~~~
+
+<param name="application.url">http://localhost:9000/${app.context.name}</param>
+<param name="rice.server.url">http://localhost:8080/kr-dev</param>
+
+~~~~~~~~
+~ 30.2 ~
+~~~~~~~~
+
+<param name="bookstore.datasource.pool.maxSize">5</param>
+<param name="bookstore.datasource.pool.minSize">5</param>
+<param name="bookstore.datasource.pool.maxWait">10000</param>
+
+~~~~~~~~
+~ 30.3 ~
+~~~~~~~~
+
+<param name="kim.mode">EMBEDDED</param>
+<param name="kew.mode">EMBEDDED</param>
+
+~~~~~~~~
+~ 30.4 ~
+~~~~~~~~
+
+<bean id="bookstoreDataSourceXAPool"
+   class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+  <property name="transactionManager" ref="transactionManagerXAPool" />
+  <property name="driverClassName" value="${datasource.driver.name}" />
+  <property name="url" value="${bookstore.datasource.url}" />
+  <property name="maxSize" value="${bookstore.datasource.pool.maxSize}" />
+  <property name="minSize" value="${bookstore.datasource.pool.minSize}" />
+  <property name="maxWait" value="${bookstore.datasource.pool.maxWait}" />
+  <property name="validationQuery"
+            value="${datasource.pool.validationQuery}" />
+  <property name="username" value="${bookstore.datasource.username}" />
+  <property name="password" value="${bookstore.datasource.password}" />
+</bean>
+
+~~~~~~~~
+~ 30.5 ~
+~~~~~~~~
+
+<bean id="riceNonTransactionalDataSource"
+      class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+  <property name="driverClassName" value="${datasource.driver.name}"/>
+  <property name="url" value="${bookstore.datasource.url}"/>
+  <property name="maxActive" value="${bookstore.datasource.pool.maxSize}"/>
+  <property name="initialSize" value="${bookstore.datasource.pool.minSize}"/>
+  <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+  <property name="username" value="${bookstore.datasource.username}" />
+  <property name="password" value="${bookstore.datasource.password}" />
+  <property name="accessToUnderlyingConnectionAllowed"
+            value="${datasource.accessToUnderlyingConnectionAllowed}"/>
+</bean>
+
+~~~~~~~~
+~ 30.6 ~
+~~~~~~~~
+
+<bean id="coreConfigurer"
+      class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
+  <property name="dataSource" ref="bookstoreDataSourceXAPool"/>
+  <property name="serverDataSource" ref="riceDataSourceXAPool"/>
+  <property name="nonTransactionalDataSource"
+            ref="riceNonTransactionalDataSource"/>
+  <property name="transactionManager"
+            ref="transactionManagerXAPool" />
+  <property name="userTransaction" ref="jtaUserTransaction" />
+</bean>

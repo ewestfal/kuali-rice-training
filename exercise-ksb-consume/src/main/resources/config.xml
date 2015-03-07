@@ -1,0 +1,16 @@
+<config>
+    <param name="environment" override="false">dev</param>
+    <param name="application.id">busclient</param>
+    <param name="message.persistence">false</param>
+    
+    <param name="application.host">localhost</param>
+    <param name="http.port">9000</param>
+	<param name="app.context.name">busclient</param>	
+	<param name="rice.server.url">http://localhost:8080/trnapp</param>
+    
+    <param name="keystore.alias">rice</param>
+	<param name="keystore.file">${user.home}/kuali/main/dev/rice.keystore</param>
+	<param name="keystore.password">r1c3pw</param>
+    
+    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+</config>

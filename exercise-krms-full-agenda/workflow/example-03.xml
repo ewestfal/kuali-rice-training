@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<data xmlns="ns:workflow" xmlns:fo="http://www.w3.org/1999/XSL/Format"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate"
+		xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>SimpleRuleTemplate2</name>
+			<description>Another simple rule template with no routing attributes.
+			</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType"
+		xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>SplitExample</name>
+			<label>SplitExample</label>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="SimpleSplit" />
+					<split name="SimpleSplit">
+						<branch name="Branch1">
+							<requests name="Branch1Node" nextNode="SimpleJoin" />
+						</branch>
+						<branch name="Branch2">
+							<requests name="Branch2Node" nextNode="SimpleJoin" />
+						</branch>
+						<join name="SimpleJoin" />
+					</split>					
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<split name="SimpleSplit"/>
+				<requests name="Branch1Node">
+					<activationType>P</activationType>
+					<ruleTemplate>SimpleRuleTemplate</ruleTemplate>
+				</requests>
+				<requests name="Branch2Node">
+					<activationType>P</activationType>
+					<ruleTemplate>SimpleRuleTemplate2</ruleTemplate>
+				</requests>
+				<join name="SimpleJoin"/>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>SplitExample</documentType>
+			<ruleTemplate>SimpleRuleTemplate</ruleTemplate>
+			<description>Simple rule routing to user1 on Branch1</description>
+			<forceAction>true</forceAction>
+			<responsibilities>
+				<responsibility>
+					<principalName>user1</principalName>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		<rule>
+			<documentType>SplitExample</documentType>
+			<ruleTemplate>SimpleRuleTemplate2</ruleTemplate>
+			<description>Simple rule routing to user2 on Branch2</description>
+			<forceAction>true</forceAction>
+			<responsibilities>
+				<responsibility>
+					<principalName>user2</principalName>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+</data>

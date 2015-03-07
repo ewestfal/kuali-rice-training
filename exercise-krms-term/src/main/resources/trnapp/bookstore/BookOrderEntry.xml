@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="BookOrderEntry" parent="DataObjectEntry"
+        p:dataObjectClass="trnapp.bookstore.BookOrderEntry"
+        p:titleAttribute="id"
+        p:objectLabel="BookOrderEntry">
+    <property name="attributes">
+      <list>
+        <ref bean="BookOrderEntry-bookId"/>
+        <ref bean="BookOrderEntry-quantity"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="BookOrderEntry-bookId" parent="AttributeDefinition"
+        p:name="bookId"
+        p:label="Book Id"
+        p:shortLabel="Book Id"
+        p:maxLength="19">
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="30"/>
+    </property>
+  </bean>
+
+  <bean id="BookOrderEntry-quantity" parent="AttributeDefinition"
+        p:name="quantity"
+        p:label="Quantity"
+        p:shortLabel="Qty"
+        p:maxLength="19">
+    <property name="validCharactersConstraint">
+      <bean parent="NumericPatternConstraint"/>
+    </property>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="30"/>
+    </property>
+  </bean>
+
+</beans>

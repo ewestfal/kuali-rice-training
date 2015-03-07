@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<data xmlns="ns:workflow" xmlns:fo="http://www.w3.org/1999/XSL/Format"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+			<namespace>TRNAPP</namespace>
+			<name>Accounts Payable</name>
+			<members>
+				<principalName>user3</principalName>
+			</members>
+		</group>
+	</groups>
+	<ruleTemplates xmlns="ns:workflow/RuleTemplate"
+		xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+		<ruleTemplate>
+			<name>FiscalApprovalTemplate</name>
+			<description>The Fiscal Approval Template</description>
+		</ruleTemplate>
+	</ruleTemplates>
+	<documentTypes xmlns="ns:workflow/DocumentType"
+		xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>BookOrderDocumentType</name>
+			<parent>RiceDocument</parent>
+			<label>Book Order</label>
+			<docHandler>${application.url}/kr-krad/bookOrder?methodToCall=docHandler</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Fiscal Approval" />
+					<requests name="Fiscal Approval" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Fiscal Approval">
+					<activationType>P</activationType>
+					<ruleTemplate>FiscalApprovalTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+		<rule>
+			<documentType>BookOrderDocumentType</documentType>
+			<ruleTemplate>FiscalApprovalTemplate</ruleTemplate>
+			<description>Simple rule routing to accounts payable</description>
+			<forceAction>true</forceAction>
+			<responsibilities>
+				<responsibility>
+					<groupName namespace="TRNAPP">Accounts Payable</groupName>
+					<actionRequested>A</actionRequested>
+				</responsibility>
+			</responsibilities>
+		</rule>
+	</rules>
+
+</data>
